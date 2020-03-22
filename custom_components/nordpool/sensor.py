@@ -156,6 +156,7 @@ class NordpoolSensor(Entity):
         # Holds the data for today and morrow.
         self._data_today = None
         self._data_tomorrow = None
+        self._tomorrow_valid = None
 
         # Values for the day
         self._average = None
@@ -332,6 +333,7 @@ class NordpoolSensor(Entity):
             "country": _REGIONS[self._area][1],
             "region": self._area,
             "low price": self.low_price,
+            "tomorrow_valid": self._tomorrow_valid, 
             "today": self.today,
             "tomorrow": self.tomorrow,
         }
@@ -395,5 +397,7 @@ class NordpoolSensor(Entity):
         tomorrow = self._api.tomorrow(self._area, self._currency)
         if tomorrow:
             self._data_tomorrow = tomorrow
+
+        self._tomorrow_valid = self._api.tomorrow_valid()
 
         self._last_tick = pendulum.now()
